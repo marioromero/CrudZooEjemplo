@@ -16,19 +16,20 @@ namespace CrudZooEjemplo.Models
         {
         }
 
-        public virtual DbSet<Avestruz> Avestruces { get; set; } = null!;
+        public virtual DbSet<Avestruce> Avestruces { get; set; } = null!;
         public virtual DbSet<Cebra> Cebras { get; set; } = null!;
         public virtual DbSet<Elefante> Elefantes { get; set; } = null!;
         public virtual DbSet<Hipopotamo> Hipopotamos { get; set; } = null!;
         public virtual DbSet<Jirafa> Jirafas { get; set; } = null!;
         public virtual DbSet<Koala> Koalas { get; set; } = null!;
-        public virtual DbSet<Leon> Leones { get; set; } = null!;
+        public virtual DbSet<Leone> Leones { get; set; } = null!;
         public virtual DbSet<Lobo> Lobos { get; set; } = null!;
         public virtual DbSet<Mono> Monos { get; set; } = null!;
         public virtual DbSet<Pantera> Panteras { get; set; } = null!;
-        public virtual DbSet<Tiburon> Tiburones { get; set; } = null!;
+        public virtual DbSet<Tiburone> Tiburones { get; set; } = null!;
         public virtual DbSet<Tigre> Tigres { get; set; } = null!;
         public virtual DbSet<Tipo> Tipos { get; set; } = null!;
+        public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,7 +45,7 @@ namespace CrudZooEjemplo.Models
             modelBuilder.UseCollation("latin1_swedish_ci")
                 .HasCharSet("latin1");
 
-            modelBuilder.Entity<Avestruz>(entity =>
+            modelBuilder.Entity<Avestruce>(entity =>
             {
                 entity.ToTable("avestruces");
 
@@ -224,7 +225,7 @@ namespace CrudZooEjemplo.Models
                     .HasConstraintName("koalas_ibfk_1");
             });
 
-            modelBuilder.Entity<Leon>(entity =>
+            modelBuilder.Entity<Leone>(entity =>
             {
                 entity.ToTable("leones");
 
@@ -344,7 +345,7 @@ namespace CrudZooEjemplo.Models
                     .HasConstraintName("panteras_ibfk_1");
             });
 
-            modelBuilder.Entity<Tiburon>(entity =>
+            modelBuilder.Entity<Tiburone>(entity =>
             {
                 entity.ToTable("tiburones");
 
@@ -408,6 +409,8 @@ namespace CrudZooEjemplo.Models
             {
                 entity.ToTable("tipos");
 
+                entity.HasIndex(e => e.Responsable, "tipos_FK");
+
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
@@ -415,6 +418,29 @@ namespace CrudZooEjemplo.Models
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(255)
                     .HasColumnName("descripcion");
+
+                entity.Property(e => e.Responsable)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("responsable");
+
+                entity.HasOne(d => d.ResponsableNavigation)
+                    .WithMany(p => p.Tipos)
+                    .HasForeignKey(d => d.Responsable)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("tipos_FK");
+            });
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.ToTable("usuarios");
+
+                entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.Nombre).HasMaxLength(100);
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(64)
+                    .HasColumnName("password");
             });
 
             OnModelCreatingPartial(modelBuilder);
