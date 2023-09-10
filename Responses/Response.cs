@@ -10,12 +10,12 @@ namespace CrudZooEjemplo.Responses
         public object Data { get; set; }
     }
 
-    public class ResponseUsuarios : Response  //se usa para retornar en la data un objeto que contiene una lista de objetos de tipo Usuario
+    public class UsuariosResponse : Response  //se usa para retornar en la data un objeto que contiene una lista de objetos de tipo Usuario
     {
         public List<Usuario> Data { get; set; }
     }
 
-    public class ResponseUsuario : Response  //se usa para retornar en la data un objeto de tipo Usuario
+    public class UsuarioResponse : Response  //se usa para retornar en la data un objeto de tipo Usuario
     {
         public Usuario Data { get; set; }
     }

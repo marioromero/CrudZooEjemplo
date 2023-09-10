@@ -7,9 +7,9 @@ namespace CrudZooEjemplo.Services
 {
     public class UsuariosService
     {
-        public async Task<ResponseUsuarios> ListaUsuarios()
+        public async Task<UsuariosResponse> ListaUsuarios()
         {
-            ResponseUsuarios response = new();
+            UsuariosResponse response = new();
             using (var context = new grupoint_actividad_crudContext())
             {
                 try
@@ -35,9 +35,9 @@ namespace CrudZooEjemplo.Services
             return response;
         }
 
-        public async Task<ResponseUsuario> CrearUsuario(UsuariosDTO data)
+        public async Task<UsuarioResponse> CrearUsuario(UsuariosDTO data)
         {
-            ResponseUsuario response = new();
+            UsuarioResponse response = new();
             using (var context = new grupoint_actividad_crudContext())
             {
                 try
@@ -79,5 +79,56 @@ namespace CrudZooEjemplo.Services
             return response;
         }
 
+        public async Task<UsuarioResponse> EditarUsuario(UsuariosUpdateDTO data, int usuarioId)
+        {
+            UsuarioResponse response = new();
+            using (var context = new grupoint_actividad_crudContext())
+            {
+                try
+                {
+                    await Task.Run(() =>
+                    {
+                        var usuario = (from u in context.Usuarios
+                                       where u.Id == usuarioId
+                                       select u).FirstOrDefault();
+
+                        if (usuario != null)
+                        {
+                            //verifica si se envió el dato para actualizarlo
+
+                            if (!string.IsNullOrEmpty(data.Nombre)) 
+                            {
+                                usuario.Nombre = data.Nombre;
+                            }
+
+                            if (!string.IsNullOrEmpty(data.Password))
+                            {
+                                usuario.Password = data.Password; //pendiente encriptar
+                            }
+
+                            context.SaveChanges();
+
+                            response.Data = usuario;
+                            response.Status = true;
+                            response.Code = 200;
+                            response.Message = "OK";
+                        }
+                        else
+                        {
+                            response.Status = false;
+                            response.Code = 404;
+                            response.Message = "Usuario no encontrado";
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    response.Status = false;
+                    response.Code = 400;
+                    response.Message = "Error: " + ex.Message;
+                }
+            }
+            return response;
+        }
     }
 }
