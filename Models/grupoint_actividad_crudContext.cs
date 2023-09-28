@@ -26,6 +26,7 @@ namespace CrudZooEjemplo.Models
         public virtual DbSet<Lobo> Lobos { get; set; } = null!;
         public virtual DbSet<Mono> Monos { get; set; } = null!;
         public virtual DbSet<Pantera> Panteras { get; set; } = null!;
+        public virtual DbSet<RegistroResponsable> RegistroResponsables { get; set; } = null!;
         public virtual DbSet<Tiburone> Tiburones { get; set; } = null!;
         public virtual DbSet<Tigre> Tigres { get; set; } = null!;
         public virtual DbSet<Tipo> Tipos { get; set; } = null!;
@@ -345,6 +346,25 @@ namespace CrudZooEjemplo.Models
                     .HasConstraintName("panteras_ibfk_1");
             });
 
+            modelBuilder.Entity<RegistroResponsable>(entity =>
+            {
+                entity.ToTable("registro_responsables");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.AnimalId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("animal_id");
+
+                entity.Property(e => e.Fecha).HasColumnName("fecha");
+
+                entity.Property(e => e.UsuarioId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("usuario_id");
+            });
+
             modelBuilder.Entity<Tiburone>(entity =>
             {
                 entity.ToTable("tiburones");
@@ -435,6 +455,8 @@ namespace CrudZooEjemplo.Models
                 entity.ToTable("usuarios");
 
                 entity.Property(e => e.Id).HasColumnType("int(11)");
+
+                entity.Property(e => e.EstaAsignado).HasColumnName("esta_asignado");
 
                 entity.Property(e => e.Nombre).HasMaxLength(100);
 

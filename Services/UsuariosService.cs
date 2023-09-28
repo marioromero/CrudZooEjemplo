@@ -43,7 +43,8 @@ namespace CrudZooEjemplo.Services
                 try
                 {
                     await Task.Run(() =>
-                    {
+                    {                      
+
                         var nombreOcupado = (from u in context.Usuarios
                                         where u.Nombre == data.Nombre
                                         select u.Nombre).FirstOrDefault();

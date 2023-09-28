@@ -13,6 +13,7 @@ namespace CrudZooEjemplo.Models
         public int Id { get; set; }
         public string Nombre { get; set; } = null!;
         public string Password { get; set; } = null!;
+        public bool EstaAsignado { get; set; }
 
         public virtual ICollection<Tipo> Tipos { get; set; }
     }
