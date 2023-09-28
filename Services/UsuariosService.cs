@@ -35,6 +35,35 @@ namespace CrudZooEjemplo.Services
             return response;
         }
 
+        public async Task<UsuarioResponse> ObtenerUsuario(int usuarioId)
+        {
+            UsuarioResponse response = new();
+            using (var context = new grupoint_actividad_crudContext())
+            {
+                try
+                {
+                    await Task.Run(() =>
+                    {
+                        var usuario = (from u in context.Usuarios
+                                        where u.Id == usuarioId
+                                        select u).FirstOrDefault();
+
+                        response.Data = usuario;
+                        response.Status = true;
+                        response.Code = 200;
+                        response.Message = "OK";
+                    });
+                }
+                catch (Exception ex)
+                {
+                    response.Status = false;
+                    response.Code = 400;
+                    response.Message = "Error: " + ex.Message;
+                }
+            }
+            return response;
+        }
+
         public async Task<UsuarioResponse> CrearUsuario(UsuariosDTO data)
         {
             UsuarioResponse response = new();
@@ -105,6 +134,11 @@ namespace CrudZooEjemplo.Services
                             if (!string.IsNullOrEmpty(data.Password))
                             {
                                 usuario.Password = data.Password; //pendiente encriptar
+                            }
+
+                            if (data.EstaAsignado != null)
+                            {
+                                usuario.EstaAsignado = data.EstaAsignado;
                             }
 
                             context.SaveChanges();

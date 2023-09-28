@@ -28,5 +28,6 @@ namespace CrudZooEjemplo.DTOs
         /*[MinLength(8, ErrorMessage = "El password debe tener al menos 8 caracteres.")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$", ErrorMessage = "El password debe tener al menos una mayúscula, una minúscula, un número y un caracter especial.")]*/
         public string? Password { get; set; }
+        public bool EstaAsignado { get; set; }
     }
 }

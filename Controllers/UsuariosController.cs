@@ -24,6 +24,13 @@ namespace CrudZooEjemplo.Controllers
             return new JsonResult(response) { StatusCode = response.Code };
         }
 
+        [HttpGet("obtener-usuario")]
+        public async Task<IActionResult> ObtenerUruasio(int idUsuario)
+        {
+            var response = await service.ObtenerUsuario(idUsuario);
+            return new JsonResult(response) { StatusCode = response.Code };
+        }
+
         [HttpPut("editar-usuario")]
         public async Task<IActionResult> EditarUsuario([FromBody] UsuariosUpdateDTO data, int usuarioId)
         {
